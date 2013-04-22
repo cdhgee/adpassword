@@ -5,21 +5,21 @@ $oldPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System
 $newPassword = Read-Host -assecurestring "Please enter your newPassword password"
 $newPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($newPassword))
 
-$users = @(
-@{"domain" = "smiths.net"; "server" = "cuscs006"; "username" = "jchqdgee"},
-@{"domain" = "smiths.net"; "server" = "cuscs006"; "username" = "jchqdgee-la"},
-@{"domain" = "medical.smgpplc.com"; "server" = "cuscs013"; "username" = "mpaudgee"},
-@{"domain" = "medical.smgpplc.com"; "server" = "cuscs013"; "username" = "mpaudgee-la"}
-)
+[XML]$config = Get-Content "config.xml"
 
-$users | ForEach-Object {
+$config.config.domain | ForEach-Object {
 
-  $domain = $_["domain"]
-  $username = $_["username"]
-  $server = $_["server"]
+  $fqdn = $_.name
+  $dc = $_.controller
 
-  Write-Output ("Changing password for {0}@{1}" -f $username,$domain)
+  $_.user | ForEach-Object {
 
-  [ADSI]$user = ("WinNT://{0}.{1}/{2},user" -f $server,$domain,$username)
-  $user.ChangePassword($oldPassword, $newPassword)
+    $username = $_
+
+    Write-Output ("WinNT://{0}.{1}/{2},user" -f $dc,$fqdn,$username)
+
+    [ADSI]$user = ("WinNT://{0}.{1}/{2},user" -f $dc,$fqdn,$username)
+    $user.ChangePassword($oldPassword, $newPassword)
+  }
+
 }

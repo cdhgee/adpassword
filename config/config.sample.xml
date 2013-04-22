@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <domain controller="dc-name" name="domain1.com">
+    <user>username-1</user>
+    <user>username-2</user>
+  </domain>
+  <domain controller="dc-name" name="domain2.net">
+    <user>username-1</user>
+    <user>username-2</user>
+  </domain>
+</config>
