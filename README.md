@@ -11,4 +11,14 @@ This tool assumes that all the accounts have synchronized passwords. If this is 
 Configuration
 -------------
 
-Copy the sample config file in the config directory and rename it `config.xml`.
+Copy the sample config file in the config directory and rename it `config.xml`. The structure of this file is very straightforward:
+
+    config (root element)
+      domain
+        user
+        user
+      domain
+        user
+        user
+
+There is no limit to the number of domains that can be defined, or the number of users per domain.
